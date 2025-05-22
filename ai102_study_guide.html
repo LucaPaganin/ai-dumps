@@ -1,23 +1,685 @@
-I'm looking for reliable sources of practice questions for the Azure AI Engineer Associate (AI-102) exam, specifically covering the content of the following learning paths:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-102 Exam Prep Interactive Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices: 
+        - Report Info: AI-102 Exam Blueprint Skills Measured percentages. Goal: Inform. Viz/Presentation: Donut Chart. Interaction: Tooltip on hover. Justification: Visually represents exam topic weights effectively. Library: Chart.js.
+        - Report Info: Comparative Overview of Practice Question Providers (Section 7). Goal: Compare. Viz/Presentation: Styled HTML Table. Interaction: None planned beyond clear presentation. Justification: Best way to present structured comparative data. Library/Method: HTML/Tailwind.
+        - Report Info: Textual content from all sections. Goal: Inform/Explain. Viz/Presentation: Summarized text blocks. Interaction: Click to expand/collapse (future enhancement, for now, direct text). Justification: Manages content density. Library/Method: HTML/Tailwind, JS for interactions.
+        - Gemini API Integration: 
+            - Feature: AI Study Tip Generator. Goal: Assist/Guide. Presentation: Modal. Interaction: Button click. Justification: Provides dynamic, AI-generated study advice.
+            - Feature: Explain This Topic. Goal: Clarify/Educate. Presentation: Modal. Interaction: Button click next to blueprint items. Justification: Offers on-demand explanations of exam topics.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfbf7; /* Warm Beige */
+            color: #374151; /* Cool Gray 700 */
+        }
+        .nav-link {
+            @apply px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-teal-100 hover:text-teal-700 transition-colors;
+        }
+        .nav-link.active {
+            @apply bg-teal-600 text-white hover:bg-teal-700;
+        }
+        .content-section {
+            @apply pt-20 pb-12 px-4 sm:px-6 lg:px-8;
+            min-height: calc(100vh - 4rem); 
+        }
+        h1, h2, h3 {
+            color: #0d9488; /* Teal 600 */
+        }
+        .card {
+            @apply bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px; 
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px; 
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        table {
+            @apply min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg shadow-md;
+        }
+        th {
+            @apply px-4 py-3 text-left text-xs font-medium text-teal-700 uppercase tracking-wider bg-teal-50 rounded-t-lg;
+        }
+        td {
+            @apply px-4 py-3 whitespace-normal text-sm text-gray-600 bg-white;
+        }
+        tr:nth-child(even) td {
+            @apply bg-gray-50;
+        }
+        .table-container {
+            @apply overflow-x-auto mt-6;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0d9488; 
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0f766e; 
+        }
+        .gemini-btn {
+            @apply ml-2 px-2 py-1 text-xs bg-amber-400 hover:bg-amber-500 text-amber-900 rounded-md transition-colors shadow-sm hover:shadow;
+        }
+        .ai-modal {
+            @apply fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center z-50;
+        }
+        .ai-modal-content {
+            @apply bg-white p-8 rounded-lg shadow-xl w-11/12 md:w-1/2 max-w-2xl max-h-[80vh] overflow-y-auto;
+        }
+        .loader {
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #0d9488; /* Teal 600 */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="antialiased">
 
-* Get started with Azure AI Services
+    <nav id="navbar" class="bg-white/80 backdrop-blur-md shadow-md fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl text-teal-600">AI-102 Guide</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#overview" class="nav-link">Overview</a>
+                        <a href="#blueprint" class="nav-link">Exam Blueprint</a>
+                        <a href="#resources" class="nav-link">Resources</a>
+                        <a href="#community" class="nav-link">Community Insights</a>
+                        <a href="#strategies" class="nav-link">Study Strategies</a>
+                        <a href="#comparison" class="nav-link">Provider Comparison</a>
+                        <a href="#recommendations" class="nav-link">Recommendations</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="bg-white inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-teal-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-teal-500" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#overview" class="nav-link block">Overview</a>
+                <a href="#blueprint" class="nav-link block">Exam Blueprint</a>
+                <a href="#resources" class="nav-link block">Resources</a>
+                <a href="#community" class="nav-link block">Community Insights</a>
+                <a href="#strategies" class="nav-link block">Study Strategies</a>
+                <a href="#comparison" class="nav-link block">Provider Comparison</a>
+                <a href="#recommendations" class="nav-link block">Recommendations</a>
+            </div>
+        </div>
+    </nav>
 
-* Develop generative AI apps in Azure AI Foundry
+    <main class="max-w-7xl mx-auto">
+        <section id="overview" class="content-section">
+            <h1 class="text-4xl font-bold mb-6 text-center">Mastering the AI-102 Exam</h1>
+            <p class="text-lg text-gray-700 mb-4 leading-relaxed">
+                Welcome to the interactive guide for the Microsoft Azure AI Engineer Associate (AI-102) certification. This application synthesizes key information from the comprehensive "AI-102 Practice Question Sources" report to help you navigate your preparation journey effectively. The AI-102 exam is a critical benchmark for professionals designing and implementing AI solutions on Azure, with a dynamic landscape emphasizing Generative AI, Azure AI Foundry, and AI Agents. Explore AI-powered explanations and study tips to enhance your learning!
+            </p>
+            <div class="card mt-8">
+                <h2 class="text-2xl font-semibold mb-3">Executive Summary Insights</h2>
+                <p class="text-gray-600 leading-relaxed">
+                    A robust preparation strategy relies on official Microsoft resources (Learn, practice assessments) and extensive hands-on labs. Paid options like MeasureUp or vetted Udemy courses can supplement this, provided they align with the latest exam blueprint. Community forums (Reddit) offer valuable real-time feedback. Success hinges on up-to-date materials and practical application. This guide will walk you through the exam structure, available resources, community opinions, and effective study strategies, now with AI assistance!
+                </p>
+            </div>
+        </section>
 
-* Develop Generative AI solutions with Azure OpenAI Service
+        <section id="blueprint" class="content-section bg-teal-50/50">
+            <h1 class="text-3xl font-bold mb-8 text-center">Understanding the AI-102 Exam Blueprint</h1>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed text-center max-w-3xl mx-auto">
+                The AI-102 exam, officially "Skills Measured," has undergone significant revisions (effective April 30, 2025), emphasizing Generative AI, Azure AI Foundry (Azure AI Studio), and AI Agents. Understanding this blueprint is crucial for focused preparation. This section breaks down the key skill areas and their weightings. Click "✨ Explain" for AI-powered insights on each topic.
+            </p>
+            <div class="flex flex-col lg:flex-row items-center lg:items-start gap-8">
+                <div class="lg:w-1/2">
+                    <div class="chart-container mx-auto">
+                        <canvas id="examBlueprintChart"></canvas>
+                    </div>
+                     <p class="text-sm text-gray-500 mt-4 text-center">Distribution of skills measured in the AI-102 exam.</p>
+                </div>
+                <div class="lg:w-1/2 space-y-4">
+                    <div class="card">
+                        <h3 class="text-xl font-semibold mb-2">Key Skill Areas:</h3>
+                        <ul id="skillAreasList" class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>Plan and manage an Azure AI solution (20–25%)<button class="gemini-btn explain-topic-btn" data-topic="Plan and manage an Azure AI solution">✨ Explain</button></li>
+                            <li>Implement generative AI solutions (15–20%)<button class="gemini-btn explain-topic-btn" data-topic="Implement generative AI solutions in Azure">✨ Explain</button></li>
+                            <li>Implement an agentic solution (5–10%)<button class="gemini-btn explain-topic-btn" data-topic="Implement an agentic solution on Azure">✨ Explain</button></li>
+                            <li>Implement computer vision solutions (10–15%)<button class="gemini-btn explain-topic-btn" data-topic="Implement computer vision solutions in Azure">✨ Explain</button></li>
+                            <li>Implement natural language processing solutions (15–20%)<button class="gemini-btn explain-topic-btn" data-topic="Implement natural language processing solutions with Azure AI Services">✨ Explain</button></li>
+                            <li>Implement knowledge mining and information extraction solutions (15–20%)<button class="gemini-btn explain-topic-btn" data-topic="Implement knowledge mining and information extraction solutions with Azure AI Search">✨ Explain</button></li>
+                        </ul>
+                    </div>
+                    <div class="card bg-yellow-50 border border-yellow-200">
+                        <h3 class="text-xl font-semibold text-yellow-700 mb-2">Important Note on Revisions:</h3>
+                        <p class="text-yellow-600">
+                            Significant updates emphasize Generative AI (Azure AI Foundry, Azure OpenAI Service) and a new section on AI Agents. The weightings for Computer Vision and NLP have decreased, while Generative AI and Knowledge Mining/Information Extraction have increased. Ensure your study materials reflect these changes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-* Develop AI agents on Azure
+        <section id="resources" class="content-section">
+            <h1 class="text-3xl font-bold mb-8 text-center">Practice Question Resources</h1>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed text-center max-w-3xl mx-auto">
+                A variety of resources can help you prepare, from official Microsoft offerings to third-party paid options. This section highlights the most recommended free resources and discusses paid alternatives, emphasizing the need for current and relevant material.
+            </p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3">Microsoft Official Resources (Free)</h2>
+                    <p class="text-gray-600 mb-3">These are foundational, comprehensive, and always up-to-date:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                        <li><strong>Microsoft Learn:</strong> Extensive modules, learning paths, and hands-on labs. Universally recommended.</li>
+                        <li><strong>Official AI-102 Practice Test (from Microsoft):</strong> ~50 questions, aligns with current objectives.</li>
+                        <li><strong>Microsoft AI Engineer Exercises / Hands-on Labs (GitHub):</strong> Crucial for practical skills.</li>
+                        <li><strong>Exam Prep Video Series:</strong> Microsoft Reactor, John Savill (highly recommended), FreeCodeCamp offer valuable video content.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3">Paid Practice Question Providers</h2>
+                    <p class="text-gray-600 mb-3">If seeking additional practice, consider these, but verify their alignment with the latest exam updates:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-600">
+                        <li><strong>MeasureUp:</strong> Official Microsoft partner, generally high quality but pricier. Likely covers new topics.</li>
+                        <li><strong>Whizlabs:</strong> Mixed Reddit reviews. Verify content recency.</li>
+                        <li><strong>Udemy (e.g., Scott Duffy, Nahid Perween):</strong> Quality varies by instructor. Look for recently updated courses. Scott Duffy's is often praised.</li>
+                        <li><strong>Pluralsight / A Cloud Guru:</strong> Offers learning paths and sandbox environments.</li>
+                        <li><strong>Edusum / SkillCertPro:</strong> More affordable options, but reviews are mixed. Diligence needed.</li>
+                    </ul>
+                    <p class="mt-4 text-sm text-red-600 font-semibold">Critical: The AI-102 exam has significantly changed. Ensure any paid resource explicitly covers Generative AI, AI Foundry, and AI Agents as per the post-April 2025 blueprint.</p>
+                </div>
+            </div>
+        </section>
 
-* Develop natural language processing solutions with Azure AI Services
+        <section id="community" class="content-section bg-teal-50/50">
+            <h1 class="text-3xl font-bold mb-8 text-center">Reddit Community Insights</h1>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed text-center max-w-3xl mx-auto">
+                The r/AzureCertification subreddit offers valuable, informal feedback on AI-102 preparation. This section summarizes key takeaways regarding resource quality, relevance, and comprehensiveness based on community discussions.
+            </p>
+            <div class="space-y-6">
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3">General Sentiment on Practice Questions</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        There's high demand for reliable practice tests. MeasureUp is respected but costly. Users often seek affordable, effective alternatives. Whizlabs and SkillCertPro get mixed reviews. Udemy quality varies by instructor and recency. Microsoft Learn is consistently lauded for comprehensive coverage.
+                    </p>
+                </div>
+                <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3">Relevance to Actual Exam Content</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Candidates seek tests that closely simulate the real exam. MeasureUp is often found comparable. Newer practice tests tend to focus on appropriate service use and UI navigation over obscure details. Recent exams include case studies and hands-on labs, so materials should reflect this. The exam is kept very up-to-date with Azure portal changes, making material recency critical.
+                    </p>
+                </div>
+                 <div class="card">
+                    <h2 class="text-2xl font-semibold mb-3">Coverage of Learning Paths (including new topics)</h2>
+                    <p class="text-gray-600 leading-relaxed">
+                        Microsoft Learn is praised for covering all objectives. Some third-party materials, especially older Udemy courses, might lack coverage or recency. While OpenAI and Generative AI are emphasized, specific discussions on "Azure AI Foundry" or "AI Agents" coverage by providers are less common in analyzed feedback, likely due to their newness. The strong emphasis on up-to-date materials implies these new topics *must* be covered by reputable current resources.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-* Develop computer vision solutions in Azure
+        <section id="strategies" class="content-section">
+            <h1 class="text-3xl font-bold mb-8 text-center">Alternative Study Strategies</h1>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed text-center max-w-3xl mx-auto">
+                Beyond hands-on practice, a comprehensive AI-102 preparation plan benefits from diverse study strategies. This section outlines effective approaches to reinforce concepts and prepare for exam nuances.
+            </p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-2">Official Microsoft Learning</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>John Savill's Training (Exam Cram)</li>
+                        <li>Microsoft Reactor AI-102 Videos</li>
+                        <li>FreeCodeCamp Course</li>
+                        <li>Microsoft AI Engineer Exercises (GitHub)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-2">Third-Party Courses</h3>
+                     <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>Udemy (Scott Duffy, etc.)</li>
+                        <li>Pluralsight / A Cloud Guru</li>
+                        <li>ExamPro</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-2">Community & Coding</h3>
+                     <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>r/AzureCertification (informal study group)</li>
+                        <li>C#/Python coding practice (SDKs)</li>
+                    </ul>
+                </div>
+                <div class="card lg:col-span-2">
+                    <h3 class="text-xl font-semibold mb-2">Exam Day Tactics</h3>
+                     <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>Time Management (critical for case studies)</li>
+                        <li>Understand Question Styles (ordering, etc.)</li>
+                        <li>Awareness of Non-Revisitable Sections</li>
+                        <li>Strategic Use of In-Exam MS Learn (navigate efficiently, no CTRL+F)</li>
+                    </ul>
+                </div>
+                 <div class="card">
+                    <h3 class="text-xl font-semibold mb-2">Focused Approaches</h3>
+                     <ul class="list-disc list-inside text-gray-600 space-y-1">
+                        <li>"Monk Mode" intensive study</li>
+                        <li>Study beyond blueprint (e.g., AZ-104 concepts)</li>
+                        <li>Deep conceptual understanding (NLP, Responsible AI, etc.)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
 
-* Implement knowledge mining with Azure AI Search
+        <section id="comparison" class="content-section bg-teal-50/50">
+            <h1 class="text-3xl font-bold mb-8 text-center">Comparative Overview: Practice Question Providers</h1>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed text-center max-w-3xl mx-auto">
+                This table offers a consolidated comparison of key practice question providers, helping you align resource selection with your needs, budget, and the crucial requirement for up-to-date content reflecting the latest AI-102 exam changes.
+            </p>
+            <div class="table-container">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th>Provider Name</th>
+                            <th>Cost Indication</th>
+                            <th>Key Features/Format</th>
+                            <th>General User Opinion</th>
+                            <th>Known Coverage (GenAI, AI Foundry, Agents)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="font-semibold text-teal-700">Microsoft Official</td>
+                            <td>Free</td>
+                            <td>Learn paths, practice assessment, GitHub labs.</td>
+                            <td>Universally Recommended, Authoritative.</td>
+                            <td class="font-medium text-green-600">Yes. Covers all current objectives.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-teal-700">MeasureUp</td>
+                            <td>Paid ($49 - $99)</td>
+                            <td>Official partner, simulates exam, detailed explanations.</td>
+                            <td>High Quality, Realistic, Pricey.</td>
+                            <td class="font-medium text-green-600">Highly Likely. Aligns with latest objectives.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-teal-700">Whizlabs</td>
+                            <td>Paid (variable)</td>
+                            <td>Practice exams.</td>
+                            <td>Mixed Reviews.</td>
+                            <td>Likely, if updated. Verify.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-teal-700">Udemy - Scott Duffy</td>
+                            <td>Paid (variable)</td>
+                            <td>Course & practice tests, updated.</td>
+                            <td>Generally Positive, Up-to-date.</td>
+                            <td>Likely, if recently updated.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-teal-700">Udemy - Other Instructors</td>
+                            <td>Paid (variable)</td>
+                            <td>Various courses & tests.</td>
+                            <td>Quality Varies.</td>
+                            <td>Variable. Must verify recency.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-teal-700">Pluralsight / A Cloud Guru</td>
+                            <td>Paid (Subscription)</td>
+                            <td>Learning paths, sandbox.</td>
+                            <td>Reputable, Sandbox valued.</td>
+                            <td>Likely for "GenAI Solutions" module. Verify.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-teal-700">Edusum</td>
+                            <td>Paid (affordable)</td>
+                            <td>Practice tests.</td>
+                            <td>Suggested as affordable, "simulates real exam".</td>
+                            <td>Unknown from snippets. Verify.</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-teal-700">SkillCertPro</td>
+                            <td>Paid (variable)</td>
+                            <td>Practice tests.</td>
+                            <td>Mixed Reviews. One positive on similarity.</td>
+                            <td>Potentially, if updated. Verify.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-* Develop solutions with Azure AI Document Intelligence
+        <section id="recommendations" class="content-section">
+            <h1 class="text-3xl font-bold mb-8 text-center">Strategic Recommendations for AI-102 Prep</h1>
+            <p class="text-lg text-gray-700 mb-6 leading-relaxed text-center max-w-3xl mx-auto">
+                Achieving the AI-102 certification requires diligent and strategic effort. These recommendations, based on resource analysis and community feedback, can guide you to success. Try our new AI Study Buddy for personalized tips!
+            </p>
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="card bg-teal-50 border border-teal-200">
+                    <h3 class="text-xl font-semibold text-teal-700 mb-2">Core Pillars:</h3>
+                    <ul class="list-disc list-inside text-teal-600 space-y-2">
+                        <li><strong>Prioritize Official Microsoft Resources:</strong> Start with MS Learn & official practice tests. They are free, authoritative, and current.</li>
+                        <li><strong>Emphasize Hands-On Labs:</strong> Actively use GitHub exercises and your Azure subscription. Practical experience is critical.</li>
+                        <li><strong>Verify Recency of Paid Materials:</strong> Crucial due to significant exam updates. Ensure coverage of new GenAI/Agent topics.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 class="text-xl font-semibold mb-2">Approach & Methods:</h3>
+                     <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li><strong>Budget-Conscious Paid Choices:</strong> If needed, vet updated Udemy courses (Scott Duffy) or alternatives like Edusum.</li>
+                        <li><strong>Integrate Diverse Study Methods:</strong> Combine reading, videos (John Savill), practice questions, and labs.</li>
+                        <li><strong>Practice Coding Concepts:</strong> Understand C#/Python for SDK interaction.</li>
+                        <li><strong>Prepare for Complex Questions:</strong> Seek scenario-based practice for case studies/labs.</li>
+                        <li><strong>Master In-Exam MS Learn Navigation:</strong> Practice finding info without CTRL+F.</li>
+                        <li><strong>Engage with Community Forums:</strong> Use r/AzureCertification for tips, but verify info.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="text-center mt-8">
+                <button id="aiStudyTipBtn" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-150 ease-in-out">
+                    ✨ Get AI Study Tip!
+                </button>
+            </div>
+            <p class="mt-8 text-center text-gray-700 font-medium">
+                A successful AI-102 strategy is adaptive, prioritizing current official resources and integrating diverse learning methods.
+            </p>
+        </section>
+        
+        <footer class="bg-gray-800 text-white py-8 mt-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <p>&copy; <span id="currentYear"></span> AI-102 Interactive Guide. For educational purposes.</p>
+                <p class="text-sm text-gray-400 mt-1">Based on the "AI-102 Practice Question Sources" report. AI features powered by Gemini.</p>
+            </div>
+        </footer>
 
-I'm interested in both free and paid resources, such as MeasureUp. I'd like to find opinions and discussions from social media users, particularly on Reddit, regarding the quality, relevance, and comprehensiveness of these practice question sources in relation to the actual exam content.
+    </main>
 
-Additionally, I'm curious to know if individuals preparing for this exam are using any study strategies beyond hands-on practice within their personal Azure subscriptions. This could include study groups, third-party practice exams, or summary materials.
+    <div id="aiResponseModal" class="ai-modal hidden">
+        <div class="ai-modal-content">
+            <h3 id="aiModalTitle" class="text-2xl font-semibold mb-4 text-teal-600">AI Generated Content</h3>
+            <div id="aiResponseLoader" class="loader hidden"></div>
+            <div id="aiResponseOutput" class="text-gray-700 leading-relaxed whitespace-pre-wrap"></div>
+            <button id="closeAiModalBtn" class="mt-6 bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                Close
+            </button>
+        </div>
+    </div>
 
-Could you please identify potential sources for practice questions, categorize them as free or paid if possible, and summarize any relevant discussions or opinions found on Reddit regarding their effectiveness? Also, please list any alternative study strategies that are commonly mentioned by those preparing for the AI-102 exam.
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if(menuButton && mobileMenu) {
+                menuButton.addEventListener('click', () => {
+                    const expanded = menuButton.getAttribute('aria-expanded') === 'true' || false;
+                    menuButton.setAttribute('aria-expanded', !expanded);
+                    mobileMenu.classList.toggle('hidden');
+                    menuButton.querySelectorAll('svg').forEach(svg => svg.classList.toggle('hidden'));
+                });
+            }
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('.content-section');
+            const navbarHeight = document.getElementById('navbar').offsetHeight;
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetSection = document.querySelector(targetId);
+                    if (targetSection) {
+                        const targetPosition = targetSection.offsetTop - navbarHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                           menuButton.click();
+                        }
+                    }
+                });
+            });
+            
+            function updateActiveLink() {
+                let index = sections.length;
+                while(--index && window.scrollY + navbarHeight + 50 < sections[index].offsetTop) {}
+                
+                navLinks.forEach((link) => link.classList.remove('active'));
+                if (sections[index]) {
+                    const activeLink = document.querySelector(`.nav-link[href="#${sections[index].id}"]`);
+                    if (activeLink) {
+                         activeLink.classList.add('active');
+                    }
+                } else if (navLinks.length > 0) { 
+                     const firstLink = document.querySelector(`.nav-link[href="#${sections[0].id}"]`);
+                     if (firstLink) {
+                        firstLink.classList.add('active');
+                     }
+                }
+            }
+
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink(); 
+
+            const ctx = document.getElementById('examBlueprintChart');
+            if (ctx) {
+                new Chart(ctx.getContext('2d'), {
+                    type: 'doughnut',
+                    data: {
+                        labels: [
+                            'Plan & Manage Azure AI Solution', 
+                            'Implement Generative AI Solutions', 
+                            'Implement Agentic Solution', 
+                            'Implement Computer Vision Solutions', 
+                            'Implement NLP Solutions', 
+                            'Implement Knowledge Mining & Info Extraction' 
+                        ],
+                        datasets: [{
+                            label: 'Exam Blueprint Weighting',
+                            data: [22.5, 17.5, 7.5, 12.5, 17.5, 17.5], 
+                            backgroundColor: [
+                                'rgba(13, 148, 136, 0.7)', 
+                                'rgba(59, 130, 246, 0.7)', 
+                                'rgba(239, 68, 68, 0.7)',  
+                                'rgba(245, 158, 11, 0.7)', 
+                                'rgba(16, 185, 129, 0.7)', 
+                                'rgba(139, 92, 246, 0.7)'  
+                            ],
+                            borderColor: [
+                                'rgba(13, 148, 136, 1)',
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(245, 158, 11, 1)',
+                                'rgba(16, 185, 129, 1)',
+                                'rgba(139, 92, 246, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    padding: 15,
+                                    font: { size: 10 },
+                                    generateLabels: function(chart) {
+                                        const data = chart.data;
+                                        if (data.labels.length && data.datasets.length) {
+                                            return data.labels.map(function(label, i) {
+                                                const meta = chart.getDatasetMeta(0);
+                                                const style = meta.controller.getStyle(i);
+                                                const MAX_LENGTH = 20; 
+                                                let newLabel = [];
+                                                let currentLine = '';
+                                                label.split(' ').forEach(word => {
+                                                    if ((currentLine + word).length > MAX_LENGTH) {
+                                                        newLabel.push(currentLine.trim());
+                                                        currentLine = '';
+                                                    }
+                                                    currentLine += word + ' ';
+                                                });
+                                                newLabel.push(currentLine.trim());
+                                                return {
+                                                    text: newLabel, 
+                                                    fillStyle: style.backgroundColor,
+                                                    strokeStyle: style.borderColor,
+                                                    lineWidth: style.borderWidth,
+                                                    hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                                    index: i
+                                                };
+                                            });
+                                        }
+                                        return [];
+                                    }
+                                }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        let label = context.label || '';
+                                        if (label) { label += ': '; }
+                                        if (context.parsed !== null) { label += context.parsed + '%'; }
+                                        return label;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            const currentYearSpan = document.getElementById('currentYear');
+            if(currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+
+            // Gemini API Integration
+            const aiResponseModal = document.getElementById('aiResponseModal');
+            const aiModalTitle = document.getElementById('aiModalTitle');
+            const aiResponseOutput = document.getElementById('aiResponseOutput');
+            const closeAiModalBtn = document.getElementById('closeAiModalBtn');
+            const aiResponseLoader = document.getElementById('aiResponseLoader');
+
+            function showAiModal(title) {
+                aiModalTitle.textContent = title;
+                aiResponseOutput.textContent = '';
+                aiResponseLoader.classList.remove('hidden');
+                aiResponseModal.classList.remove('hidden');
+            }
+
+            function hideAiModal() {
+                aiResponseModal.classList.add('hidden');
+                aiResponseLoader.classList.add('hidden');
+            }
+
+            if(closeAiModalBtn) {
+                closeAiModalBtn.addEventListener('click', hideAiModal);
+            }
+             // Close modal if clicked outside content
+            if(aiResponseModal){
+                aiResponseModal.addEventListener('click', function(event) {
+                    if (event.target === aiResponseModal) {
+                        hideAiModal();
+                    }
+                });
+            }
+
+
+            async function callGeminiAPI(prompt) {
+                const apiKey = ""; // Placeholder for API key
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+                
+                let chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
+                const payload = { contents: chatHistory };
+
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        console.error('Gemini API Error:', errorData);
+                        return `Error: ${errorData.error?.message || response.statusText}. Please ensure you have a valid API key if not using the default model, or check the console for more details.`;
+                    }
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0 &&
+                        result.candidates[0].content && result.candidates[0].content.parts &&
+                        result.candidates[0].content.parts.length > 0) {
+                        return result.candidates[0].content.parts[0].text;
+                    } else {
+                        console.error('Unexpected Gemini API response structure:', result);
+                        return "Sorry, I couldn't get a response from the AI. The response structure was unexpected.";
+                    }
+                } catch (error) {
+                    console.error('Fetch error calling Gemini API:', error);
+                    return "Sorry, there was an error connecting to the AI service. Please check your network connection and try again.";
+                }
+            }
+
+            const explainTopicBtns = document.querySelectorAll('.explain-topic-btn');
+            explainTopicBtns.forEach(btn => {
+                btn.addEventListener('click', async function() {
+                    const topic = this.dataset.topic;
+                    showAiModal(`✨ AI Explanation: ${topic}`);
+                    const prompt = `Explain the AI-102 exam topic "${topic}" in a concise way for someone studying for the certification. Focus on key concepts and what a candidate should know.`;
+                    const explanation = await callGeminiAPI(prompt);
+                    aiResponseLoader.classList.add('hidden');
+                    aiResponseOutput.textContent = explanation;
+                });
+            });
+
+            const aiStudyTipBtn = document.getElementById('aiStudyTipBtn');
+            if (aiStudyTipBtn) {
+                aiStudyTipBtn.addEventListener('click', async function() {
+                    showAiModal('✨ AI Study Tip');
+                    const prompt = "Generate a unique and helpful study tip for someone preparing for the Microsoft Azure AI Engineer (AI-102) exam. Make it actionable.";
+                    const tip = await callGeminiAPI(prompt);
+                    aiResponseLoader.classList.add('hidden');
+                    aiResponseOutput.textContent = tip;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
